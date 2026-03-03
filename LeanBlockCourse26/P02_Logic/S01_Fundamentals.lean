@@ -7,6 +7,7 @@ https://adam.math.hhu.de/#/g/trequetrum/lean4game-logic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic.Basic
 import Mathlib.Tactic.NthRewrite
+import Mathlib.Tactic.Rename
 
 /-
 # Fundamentals of Lean Proofs
@@ -268,13 +269,24 @@ example : (fun (α : Type) => α) = id := rfl
 -- Show, in at least two different ways, that if
 -- `P` implies `Q` and `Q` implies `R`, then `P` implies `R`
 example (P Q R : Prop) (f : P → Q) (g : Q → R) : P → R := by
-  sorry
+  intro p
+  let q := f p -- have already seen `let` in the examples in P01
+  let r := g q
+  exact r
+-- or `by intro p; exact g (f p)` or `by exact g ∘ f`
+-- or in term mode `fun p => g (f p)` or just `g ∘ f`
 
 -- Exercise 2.2
 -- Show that if `P` implies `Q`, `Q` implies `R`, and
 -- `R` implies `S`, then `P` implies `S`
 example (P Q R S : Prop) (h₁ : P → Q) (h₂ : Q → R) (h₃ : R → S) : P → S := by
-  sorry
+  intro p
+  exact h₃ <| h₂ <| h₁ p
+-- or just term mode `h₃ ∘ h₂ ∘ h₁`
+
+-- Note that `P → Q → R` is `P → (Q → R)`.
+example (P Q R : Prop) : (P → Q → R) = (P → (Q → R)) := rfl
+example (P Q R : Prop) : (P → Q → R) ↔ (P → (Q → R)) := by rfl
 
 -- Exercise 2.3
 -- Show that if `P` implies that `Q` implies `R`
@@ -288,12 +300,117 @@ example (P Q R : Prop) (h₁ : P → Q → R) (h₂ : P → Q) : P → R := by
 -- `Q` implies `R` and if we also have a proof of `P`, then
 -- the proposition `Q → R` holds, i.e., we have a proof of it.
 example (P Q R : Prop) (h₁ : P → (Q → R)) (p : P) : Q → R := by
-  sorry
+  exact h₁ p
 
 -- Exercise 2.4 (Master students)
 example (P Q R : Prop) (h₂ : Q → R) : P → (Q → R) := by
-  sorry
+  intro
+  assumption -- or `exact h₂`
+
+-- and the same in term mode
+example (P Q R : Prop) (h₂ : Q → R) : P → (Q → R) := fun _ => h₂
+
+-- Think if it like the following python code:
+--
+-- ```
+-- def foo(n: int, s: str) -> str:
+--   return s
+-- ```
+--
+-- The input `n: int` (`p : P`) is completely superfluous and unused!
+-- The output `-> str` we could have of course constructed in many
+-- different ways, but if the type `str` suddenly (i) could not distinguish
+-- between different instances (`"foo"` is the same as `"bar"`) and
+-- (ii) creating an instance was hard, then suddenly `return s` is 
+-- sensible and the only logical thing to do. This is what happens in our proof.
+
+-- The boundary between assumptions (left of `:`) and statement to be proven
+-- (right of `:`) is blurry as shown by intro. In fact, we will see that
+-- ultimately this is just "nice syntax" for mathematicians and underlying it
+-- everything is one large "arrowed" type. Note that in this version we avoid
+-- the `intro p` and the liner flags `p : P` as unused.
+example (P Q R : Prop) (h₂ : Q → R) (p : P) : (Q → R) := by
+  exact h₂
 
 -- Exercise 2.5 (Master students)
+-- Note that `S → P → Q → R` is grouped as `S → (P → (Q → R))`
+example (P Q R S : Prop) : (S → P → Q → R) = (S → (P → (Q → R))) := rfl
+
 example (P Q R S : Prop) (h₂ : Q → R) : S → P → Q → R := by
-  sorry
+  intro _ _ -- We can intro multiple things at the same time!
+  assumption
+
+-- and the same in term mode
+example (P Q R S : Prop) (h₂ : Q → R) : S → P → Q → R := fun _ _ => h₂
+
+/-
+## The `revert` tactic
+
+The `revert` tactic moves a hypothesis from the context back into the goal, essentially
+reversing the effect of `intro`. It is used only around 350 times in mathlib.
+-/
+
+-- Note that `hA : A` is exactly the same as `a : A`. It's just a name!
+example (A B : Prop) (hA : A) (h : A → B) : B := by
+  exact h hA -- we have seen exactly this before
+
+example (A B : Prop) (hA : A) (h : A → B) : B := by
+  revert hA
+  assumption
+
+
+/-
+## The `rw` tactic
+
+The `rw` tactic performs substitutions using equalities (`=`) or equivalences (`↔`).
+It's one of the most fundamental tactics in Lean, allowing us to:
+
+- Use hypotheses to rewrite goals
+- Use hypotheses to rewrite other hypotheses using `at`
+
+This tactic is used around 70,000 times in mathlib.
+-/
+
+-- Basic rewriting in the goal
+example (P Q : Prop) (h : P ↔ Q) : P → Q := by
+  rw [h]
+  intro q
+  exact q -- or just both together with `exact id`
+
+-- Without rewriting
+example (P Q : Prop) (h : P ↔ Q) : P → Q := by
+  intro p
+  have p_impl_q := h.mp -- `mp`(modues ponens) is the `P → Q` direction of `P ↔ Q`
+  exact p_impl_q p
+
+-- In fact, our statement is just the modus ponens of the assumption `h`
+example (P Q : Prop) (h : P ↔ Q) : P → Q := h.mp
+
+-- Rewriting in hypotheses with `at`
+example (P Q : Prop) (h₁ : P ↔ Q) (p : P) : Q := by
+  rw [h₁] at p -- note that this only replaces the type `P` and does not rename the variable `p`
+  assumption   -- or `exact p`
+
+-- If you *reaaally* wanted to rename a variable, use `import Mathlib.Tactic.Rename`
+example (P Q : Prop) (h₁ : P ↔ Q) (p : P) : Q := by
+  rw [h₁] at p -- note that this only replaces the type `P` and does not rename the variable `p`
+  rename' p => q
+  exact q
+
+-- Multiple rewrites
+theorem test (P Q R : Prop) (h₁ : P ↔ Q) (h₂ : R ↔ Q) : P ↔ R := by
+  rw [h₁]
+  rw [h₂] -- implicit `rfl` call automatically closes `Q ↔ Q` in goal
+
+#print test -- tells us that `Iff.rfl` is invoked
+
+example (P Q R : Prop) (h₁ : P ↔ Q) (h₂ : R ↔ Q) : P ↔ R := by
+  rw [h₁, h₂] -- first replaces `P` with `Q`, then `R` with `Q` for `Q ↔ Q`
+
+-- What if we flipped `Q ↔ R` around in `h₂`?
+example (P Q R : Prop) (h₁ : P ↔ Q) (h₂ : Q ↔ R) : P ↔ R := by
+  rw [h₁, h₂] -- first replaces `P` with `Q`, then *that same* `Q` with `R` for `R ↔ R`
+
+-- Works with equality of propositions too (but this is not really relevant for mathematics...)
+example (P Q R : Prop) (h₁ : P = Q) (h₂ : Q = R) : P = R := by
+  rw [h₁, h₂]
