@@ -145,7 +145,7 @@ def generate() -> str:
     for part, _ in PARTS:
         if pdf := find_slides(part):
             rel = pdf.relative_to(ROOT)
-            slide_rows.append(f"| {part} | [{pdf.name}]({rel}) |")
+            slide_rows.append(f"| `{part}` | [{pdf.name}]({rel}) |")
     if slide_rows:
         lines.append("")
         lines.append("## Slides")
@@ -158,7 +158,7 @@ def generate() -> str:
         lines.append("")
         lines.append("---")
         lines.append("")
-        lines.append(f"## {part}")
+        lines.append(f"## `{part}`")
         lines.append("")
         lines.append(description)
 
@@ -176,11 +176,11 @@ def generate() -> str:
             lines.append("| Section | Topic |")
             lines.append("|---------|-------|")
         for sec in sections:
-            link = f"[{sec.name}]({github_url(sec.rel_path)})"
+            link = f"[`{sec.name}`]({github_url(sec.rel_path)})"
             if has_exercises:
                 if sec.blocks:
                     block_links = " \\| ".join(
-                        f"[Block {i + 1}]({github_url(sec.rel_path, b.line)})"
+                        f"[`B{i + 1:02d}`]({github_url(sec.rel_path, b.line)})"
                         for i, b in enumerate(sec.blocks)
                     )
                 else:

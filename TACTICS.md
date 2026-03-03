@@ -7,7 +7,7 @@ nav_order: 5
 
 Tactics are commands used inside `by` blocks to construct proofs step by step. The tables below list every tactic used in this course, grouped by where it is first introduced. For detailed documentation, see the [Lean Tactic Reference](https://lean-lang.org/doc/reference/latest/Tactic-Proofs/Tactic-Reference/).
 
-## S01_Fundamentals (P02_Logic)
+## `P02_Logic` · `S01_Fundamentals`
 
 | Tactic | Effect |
 |--------|--------|
@@ -21,7 +21,7 @@ Tactics are commands used inside `by` blocks to construct proofs step by step. T
 | `nth_rw n [h]` | Rewrite only the n-th occurrence. |
 | `symm` | Swap sides of an equality or iff. |
 
-## S02_Reasoning (P02_Logic)
+## `P02_Logic` · `S02_Reasoning`
 
 | Tactic | Effect |
 |--------|--------|
@@ -30,7 +30,7 @@ Tactics are commands used inside `by` blocks to construct proofs step by step. T
 | `have h : T := ...` | Introduce a new fact `h` of type `T`. |
 | `suffices h : T` | Like `have`, but prove the main goal first. |
 
-## S03_Connectives (P02_Logic)
+## `P02_Logic` · `S03_Connectives`
 
 | Tactic | Effect |
 |--------|--------|
@@ -42,7 +42,7 @@ Tactics are commands used inside `by` blocks to construct proofs step by step. T
 | `h.1` / `h.2` | Project left or right component of `h : P ∧ Q`. |
 | `h.mp` / `h.mpr` | Forward or backward direction of `h : P ↔ Q`. |
 
-## S04_Negation (P02_Logic)
+## `P02_Logic` · `S04_Negation`
 
 | Tactic | Effect |
 |--------|--------|
@@ -53,7 +53,7 @@ Tactics are commands used inside `by` blocks to construct proofs step by step. T
 | `push_neg` | Push negation inward through connectives and quantifiers. |
 | `trivial` | Try `rfl`, `assumption`, `contradiction`, and similar. |
 
-## S05_Quantifiers (P02_Logic)
+## `P02_Logic` · `S05_Quantifiers`
 
 | Tactic | Effect |
 |--------|--------|
@@ -61,14 +61,14 @@ Tactics are commands used inside `by` blocks to construct proofs step by step. T
 | `choose f hf using h` | Extract a witness function from `∀ x, ∃ y, P x y`. |
 | `ext x` | Prove `f = g` by showing `f x = g x` for arbitrary `x`. |
 
-## S05_Quantifiers — Automation (P02_Logic)
+## `P02_Logic` · `S05_Quantifiers` — Automation
 
 | Tactic | Effect |
 |--------|--------|
 | `tauto` | Close propositional tautologies in one step. |
 | `grind` | SMT-style solver handling quantifiers and arithmetic. |
 
-## P05_NaturalNumbers
+## `P05_NaturalNumbers`
 
 | Tactic | Effect |
 |--------|--------|
@@ -77,7 +77,7 @@ Tactics are commands used inside `by` blocks to construct proofs step by step. T
 | `decide` | Prove decidable propositions by computation. |
 | `calc` | Chain equalities or inequalities through intermediate steps. |
 
-## P06_InfinitePrimes / P07_Mantel
+## `P06_InfinitePrimes` · `P07_Mantel`
 
 | Tactic | Effect |
 |--------|--------|
