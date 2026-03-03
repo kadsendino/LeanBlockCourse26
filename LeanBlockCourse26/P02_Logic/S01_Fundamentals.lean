@@ -99,7 +99,7 @@ example (n : ℕ) : (1 < n : Prop) = (n > 1 : Prop) := rfl
 -- `(P : Prop)` is just a proposition, it can be true, false, unprovable
 -- a trivial lemma, a known theorem, an open conjecture, or complete garbage
 -- 
--- `(p : P)` is an instanciation of `P` and therefore a proof to lean.
+-- `(p : P)` is an instantiation of `P` and therefore a proof to lean.
 -- Notably we are not working with booleans or even ⊤ here!
 example (P : Prop) (p : P) : P := by
   assumption
@@ -159,7 +159,7 @@ An implication `P → Q` can be proved by assuming `P` and proving `Q`.
 
 -- `P → Q` means that `P` implies `Q`
 -- `h : P → Q` means `h` is a proof of the proposition `P → Q`
--- the same way that `p : P` is a proof of the propositon `P`
+-- the same way that `p : P` is a proof of the proposition `P`
 
 -- Note that `\to` produces `→`
 example (P Q : Prop) (h : P → Q) : P → Q := by
@@ -232,7 +232,7 @@ It is used around 12,000 times in mathlib.
 
 We already saw this for our proof that the composite of two continuous functions
 is itself continuous. This is whatever implicitly happens in pen-and-paper proofs
-when someone says "Let ... be ..." and it is clear that they are refering to
+when someone says "Let ... be ..." and it is clear that they are referring to
 an assumption that they pulled from the proposition the want to show.
 -/
 
@@ -242,7 +242,7 @@ example (P : Prop) : P → P := by
   exact p
 
 -- Intro always applies when you have "LHS implies RHS"
--- and it instanciates the type LHS, so if LHS is a 
+-- and it instantiates the type LHS, so if LHS is a
 -- proposition, this means we assume a proof of LHS
 example (P : Prop) : P → P := by
   intro p
@@ -277,16 +277,16 @@ example (P Q R S : Prop) (h₁ : P → Q) (h₂ : Q → R) (h₃ : R → S) : P 
   sorry
 
 -- Exercise 2.3
--- Show that if the proposition that `P` implies `Q`
--- implies the proposition `R` and if also `P` implies `Q`,
--- then `P` implies `R`. Note that `P → Q → R` is `(P → Q) → R`.
+-- Show that if `P` implies that `Q` implies `R`
+-- and if also `P` implies `Q`, then `P` implies `R`.
+-- Note that `→` is right-associative: `P → Q → R` is `P → (Q → R)`.
 example (P Q R : Prop) (h₁ : P → Q → R) (h₂ : P → Q) : P → R := by
   sorry
 
 -- Exercise 2.3 (alt)
 -- Show that if the proposition `P` implies the proposition that
--- `Q` implies `R` and if we alos have a proof of `P`, then 
--- the propositon `Q → R` holds, i.e., we have a proof of it.
+-- `Q` implies `R` and if we also have a proof of `P`, then
+-- the proposition `Q → R` holds, i.e., we have a proof of it.
 example (P Q R : Prop) (h₁ : P → (Q → R)) (p : P) : Q → R := by
   sorry
 
