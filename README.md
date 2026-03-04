@@ -14,7 +14,6 @@ Taught by [Christoph Spiegel](https://christophspiegel.berlin) (ZIB) with [Silas
 
 ## Announcements
 
-- **2026-03-04:** Exercise Block B02 (P02/S03) now has a `#golf` command that measures proof length automatically. Prefix your `example` with `#golf` to see the score.
 - **2026-03-03:** Since we went over by 10 minutes, on Wednesday (March 4) we start at **10:00** instead of 9:30.
 - **2026-03-02:** Since we went over by 30 minutes, on Tuesday (March 3) we start at **9:40** instead of 9:30.
 - **2026-03-02:** Uploaded slides for `P01_Introduction`.
