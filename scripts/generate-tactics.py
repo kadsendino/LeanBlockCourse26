@@ -216,24 +216,25 @@ def generate(
             else:
                 lines.append(f"| {tac_cell} | {tactic['effect']} | {intro_cell} |")
 
-        # Examples in a collapsible section
-        examples = [
-            (t["name"], t["example"])
-            for t in group["tactics"]
-            if t.get("example") and not t["example"].startswith("--")
-        ]
-        if examples:
-            lines.append("")
-            lines.append("<details>")
-            lines.append("<summary>Examples</summary>")
-            lines.append("")
-            for name, ex in examples:
-                lines.append(f"**`{name}`**")
-                lines.append("```lean")
-                lines.append(ex)
-                lines.append("```")
-                lines.append("")
-            lines.append("</details>")
+        # TODO: examples in collapsible sections — disabled until Jekyll
+        # rendering of <details> + fenced code blocks is fixed.
+        # examples = [
+        #     (t["name"], t["example"])
+        #     for t in group["tactics"]
+        #     if t.get("example") and not t["example"].startswith("--")
+        # ]
+        # if examples:
+        #     lines.append("")
+        #     lines.append("<details>")
+        #     lines.append("<summary>Examples</summary>")
+        #     lines.append("")
+        #     for name, ex in examples:
+        #         lines.append(f"**`{name}`**")
+        #         lines.append("```lean")
+        #         lines.append(ex)
+        #         lines.append("```")
+        #         lines.append("")
+        #     lines.append("</details>")
 
         lines.append("")
 
