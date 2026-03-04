@@ -61,7 +61,7 @@ theorem example_forward (P Q R : Prop) (h₁ : P → Q) (h₂ : Q → R) (p : P)
   have r : R := by exact h₂ q -- Since Q implies R and we have a proof of Q, we have a proof of R
   exact r                     -- We need and have a proof of R
 
-#print example_forward -- The `have` actually show up in term mode
+#print example_forward -- The `have` actually shows up in term mode
 
 -- We can of course simplify this proof in term mode
 example (P Q R : Prop) (h₁ : P → Q) (h₂ : Q → R) (p : P) : R := by
@@ -246,7 +246,7 @@ around 19,000 times in mathlib.
 
 example (P Q : Prop) (f : P → Q) (p : P) : Q := by
   refine f ?_  -- in this case it behaves like `apply`
-  exact p      -- this answers a sub-goal raised `_?`
+  exact p      -- this answers a sub-goal raised by `?_`
 
 example (P Q : Prop) (f : P → Q) (p : P) : Q := by
   refine f p   -- in this case it behaves like `exact`
@@ -297,6 +297,7 @@ example (P Q R : Prop) (h₁ : P → Q) (h₂ : Q → R) (p : P) : R :=
 ## Exercise Block B02: Graph of Implications (Continued)
 -/
 
+-- Exercise 2.1
 -- Use only `suffices` to work backwards from the goal:
 example (A B C D E F G H I : Prop)
     (f : A → B) (g : C → B) (h : A → D) (i : B → E) (j : C → F)
@@ -307,6 +308,7 @@ example (A B C D E F G H I : Prop)
   suffices B by exact i this
   exact f a
 
+-- Exercise 2.2
 -- Use only `refine` to work backwards from the goal:
 example (A B C D E F G H I : Prop)
     (f : A → B) (g : C → B) (h : A → D) (i : B → E) (j : C → F)
@@ -318,6 +320,7 @@ example (A B C D E F G H I : Prop)
   refine f ?_
   exact a
 
+-- Exercise 2.3
 -- Combine all of `clear`, `exact`, `have`, `suffices`, `refine`, and `apply`
 -- *NEVER* actually write your proofs like this!!!
 example (A B C D E F G H I : Prop)

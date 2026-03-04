@@ -17,7 +17,7 @@ import Mathlib.Logic.Basic
 This module introduces how to work with compound propositions:
 - Conjunction (`AND`, `∧`)
 - Disjunction (`OR`, `∨`)
-- Equivalence (`↔`) is (essentially but not exactly) just a `_ → _ ∧ _→_`
+- Equivalence (`↔`) is (essentially but not exactly) just a `_ → _ ∧ _ → _`
 
 Key tactics:
 - `constructor` for splitting compound goals
@@ -47,7 +47,7 @@ To prove `P ∧ Q`, we need to prove both `P` and `Q`. We can:
 -- The linter will complain about the following formatting, even though this
 -- produces valid Lean code. So the `exact` tactic is slightly cleverer than
 -- we originally assumed: it can handle multiple goals and close the first one
--- while keeping others open, so no longer quite the same behavior like a  `return`.
+-- while keeping others open, so no longer quite the same behavior like a `return`.
 -- Note that the order matters though, so `exact q; exact p` does not work.
 theorem goal_and_apply (P Q : Prop) (p : P) (q : Q) : P ∧ Q := by
   apply And.intro
@@ -86,7 +86,7 @@ example (P Q : Prop) (p : P) (q : Q) : P ∧ Q := by
 -- Or just use term mode with the `⟨...⟩` notation
 example (P Q : Prop) (p : P) (q : Q) : P ∧ Q := ⟨p, q⟩
 
--- First side note: the `⟨...⟩` notation just instanciates a structure ...
+-- First side note: the `⟨...⟩` notation just instantiates a structure ...
 example (P Q : Prop) (p : P) (q : Q) : P ∧ Q := by
   exact {
     left := p,
@@ -101,7 +101,7 @@ example (P Q : Prop) (p : P) (q : Q) : P ∧ Q := by
     left := p
   }
 
--- Secod side note: recall that we can stack proofs in proofs
+-- Second side note: recall that we can stack proofs in proofs
 example (P Q : Prop) (p : P) (q : Q) : P ∧ Q := by
   exact ⟨by assumption, by assumption⟩
 
@@ -166,12 +166,12 @@ structure And (a b : Prop) : Prop where
 
 -- Using `obtain` for destructuring
 example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
-  obtain ⟨p, q⟩ := h -- disects into `p` and `q` and forgets about `h`
+  obtain ⟨p, q⟩ := h -- dissects into `p` and `q` and forgets about `h`
   exact ⟨q, p⟩
 
 -- Using `have` for destructuring
 example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
-  have ⟨p, q⟩ := h -- disects into `p` and `q` but does *not* forget about `h`
+  have ⟨p, q⟩ := h -- dissects into `p` and `q` but does *not* forget about `h`
   exact ⟨q, p⟩
 
 -- Splitting h up using `cases` (though this is very unintuitive...)
@@ -181,7 +181,7 @@ example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
   · assumption
   · assumption
 
--- Using pattern matching with `cases` (recall S01P05)
+-- Using pattern matching with `cases` (recall P01S05)
 example (P Q : Prop) (h : P ∧ Q) : Q ∧ P := by
   cases h with
   | intro p q => exact ⟨q, p⟩ -- though mathematically this is awful notation
@@ -206,14 +206,14 @@ example (P Q : Prop) : (P ∧ Q) → P := by
   intro ⟨p, _⟩
   exact p
 
--- This als works nicely in term mode
+-- This also works nicely in term mode
 example (P Q : Prop) : (P ∧ Q) → P := fun ⟨p, _⟩ => p
 
 -- Note that this is different from
 example (P Q : Prop) : P → Q → P := fun p _ => p
 
 /-
-# Exercise Block B01
+## Exercise Block B01
 -/
 
 -- Exercise 1.1
