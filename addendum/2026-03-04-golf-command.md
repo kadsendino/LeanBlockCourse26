@@ -20,7 +20,8 @@ Add the dependency to your `lakefile.toml`:
 ```toml
 [[require]]
 name = "ProofGolf"
-scope = "FordUniver"
+git = "https://github.com/FordUniver/ProofGolf"
+rev = "main"
 ```
 
 Then run `lake update ProofGolf` and add `import ProofGolf` to any file where you want to use it.
