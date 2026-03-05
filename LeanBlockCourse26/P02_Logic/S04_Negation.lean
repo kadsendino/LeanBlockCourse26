@@ -195,14 +195,13 @@ example (P Q : Prop) (p : ¬¬P) (f : P → Q) : ¬¬Q := by
 
 -- Exercise 1.3
 example (P Q R : Prop) (h : P ∨ Q ∨ R → ¬(P ∧ Q ∧ R)) : (P ∨ Q) ∨ R → ¬((P ∧ Q) ∧ R) := by
-  intro hpqr hpqr'
-  obtain ⟨⟨p, q⟩, r⟩ := hpqr'
+  intro hpqr ⟨⟨p, q⟩, r⟩
   apply h
-  · cases hpqr
-    · cases ‹P ∨ Q›
-      · left; assumption
-      · right; left; assumption
-    · right; right; assumption
+  · rcases hpqr with hpq | r
+    · rcases hpq with p | q
+      · left; exact p
+      · right; left; exact q
+    · right; right; exact r
   · exact ⟨p, q, r⟩
 
 example (P Q R : Prop) (h : P ∨ Q ∨ R → ¬(P ∧ Q ∧ R)) : (P ∨ Q) ∨ R → ¬((P ∧ Q) ∧ R) := by
