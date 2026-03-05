@@ -316,7 +316,8 @@ def parse_announcements() -> list[Announcement]:
 
 
 def inline_md_to_html(text: str) -> str:
-    """Convert basic inline markdown (**bold** and `code`) to HTML."""
+    """Convert basic inline markdown to HTML."""
+    text = re.sub(r"\[(.+?)\]\((.+?)\)", r'<a href="\2">\1</a>', text)
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"`(.+?)`", r"<code>\1</code>", text)
     return text
@@ -329,11 +330,7 @@ def format_label(ann: Announcement) -> str:
     markdown.  Only the time-of-day is taken from git blame (if available
     and the blame date matches the announced date).
     """
-    day = ann.d.strftime("%a, %b %-d")
-    if ann.timestamp and ann.timestamp.date() == ann.d:
-        text = f"{day} · {ann.timestamp.strftime('%-H:%M')}"
-    else:
-        text = day
+    text = ann.d.strftime("%a, %b %-d")
     return f'<span class="label label-yellow">{text}</span>'
 
 
