@@ -8,7 +8,6 @@ import Mathlib.Tactic.Basic
 import Mathlib.Tactic.ByContra
 import Mathlib.Tactic.Push
 import Mathlib.Tactic.NthRewrite
-import Mathlib.Data.Nat.Basic
 
 /-
 # Negation and Classical Logic
@@ -86,12 +85,6 @@ example (P : Prop) (h : False) : P := by
   contradiction
 
 example (P Q : Prop) (h : P) (hn : ¬P) : Q := by
-  contradiction
-
-example (n : ℕ) (h : n ≠ n) : n = 37 := by
-  contradiction
-
-example (n : ℕ) (h : n = 10) (g : n ≠ 10) : n = 42 := by
   contradiction
 
 /-
